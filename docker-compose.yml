@@ -1,0 +1,56 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: suporte-rioave-app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      APP_NAME: Rio Ave
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8080
+      APP_KEY: base64:3KcD9Yh8qJ9U4sUQ3iS6Gv9u2V8xQ0oR7wL1nE5mT6A=
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: suporte_rioave
+      DB_USERNAME: rioave
+      DB_PASSWORD: rioave123
+      SESSION_DRIVER: file
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
+    ports:
+      - "8080:80"
+    networks:
+      - suporte-net
+
+  db:
+    image: mysql:8.4
+    container_name: suporte-rioave-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: suporte_rioave
+      MYSQL_USER: rioave
+      MYSQL_PASSWORD: rioave123
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    networks:
+      - suporte-net
+
+volumes:
+  mysql_data:
+
+networks:
+  suporte-net:
+    driver: bridge
