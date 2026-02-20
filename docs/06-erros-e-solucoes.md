@@ -57,8 +57,9 @@
 
 ## 11) Erro `419 Page Expired` após login
 
-- Status: observado em ambiente Docker após autenticação, ainda pendente de correção nesta etapa.
-- Próxima investigação sugerida:
-  - validar `APP_URL` e domínio/scheme da sessão;
-  - limpar cookies/sessão do navegador após rebuild;
-  - revisar `SESSION_DRIVER`, `SESSION_DOMAIN` e `SESSION_SECURE_COOKIE` para ambiente local.
+- Causa: arquivo `routes/web.php` com BOM (UTF-8) no início, interferindo no fluxo de resposta/headers (cookies de sessão e token CSRF).
+- Solução:
+  - remover BOM do arquivo (`routes/web.php` deve iniciar diretamente com `<?php`);
+  - recriar o container `app` para garantir que a imagem contenha o arquivo corrigido:
+    - `docker compose up -d --build --force-recreate app`
+  - validar resposta de `GET /login` com cookies `XSRF-TOKEN` e `rio-ave-session`.

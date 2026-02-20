@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class ChatbotController extends Controller
+class ChatBotController extends Controller
 {
     /**
      * Processa a mensagem do usuário usando lógica local (sem IA/APIs externas)
@@ -95,5 +95,4 @@ class ChatbotController extends Controller
         return false;
     }
 }
-
 
