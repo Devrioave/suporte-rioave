@@ -6,6 +6,14 @@
     .dark body {
         @apply bg-slate-950 text-slate-100;
     }
+
+    button,
+    input[type="button"],
+    input[type="submit"],
+    input[type="reset"],
+    [role="button"] {
+        box-shadow: none !important;
+    }
 }
 
 @layer utilities {
@@ -39,5 +47,18 @@
 
     .dark .hover\:bg-gray-50:hover {
         @apply bg-slate-800;
+    }
+
+    /* Remove sombras no modo escuro */
+    .dark .shadow-sm,
+    .dark .shadow,
+    .dark .shadow-md,
+    .dark .shadow-lg,
+    .dark .shadow-xl,
+    .dark .shadow-2xl,
+    .dark .shadow-blue-100,
+    .dark .shadow-blue-200,
+    .dark [class*="shadow-["] {
+        box-shadow: none !important;
     }
 }

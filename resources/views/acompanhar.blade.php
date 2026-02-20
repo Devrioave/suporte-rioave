@@ -19,7 +19,7 @@
                        value="{{ old('protocolo', $solicitacao->protocolo ?? '') }}"
                        class="w-full pl-10 pr-4 py-4 rounded-2xl border border-gray-200 focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all font-mono uppercase text-lg">
             </div>
-            <button type="submit" class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 active:scale-95">
+            <button type="submit" class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-blue-700 transition-all active:scale-95">
                 Consultar
             </button>
         </form>
@@ -96,4 +96,3 @@
     @endif
 </div>
 @endsection
-

@@ -26,8 +26,8 @@
             <button id="theme-toggle"
                     type="button"
                     class="px-3 py-2 rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors text-sm font-semibold">
-                <span id="theme-toggle-icon">🌙</span>
-                <span class="sr-only">Alternar modo escuro</span>
+                <span class="mr-2">Modo noturno</span>
+                <span id="theme-toggle-state" class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold bg-gray-200 text-gray-700">OFF</span>
             </button>
         </div>
         
@@ -45,9 +45,18 @@
         function applyTheme(isDark) {
             document.documentElement.classList.toggle('dark', isDark);
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            const icon = document.getElementById('theme-toggle-icon');
-            if (icon) {
-                icon.textContent = isDark ? '☀️' : '🌙';
+            const toggle = document.getElementById('theme-toggle');
+            const state = document.getElementById('theme-toggle-state');
+
+            if (toggle) {
+                toggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+            }
+
+            if (state) {
+                state.textContent = isDark ? 'ON' : 'OFF';
+                state.className = isDark
+                    ? 'inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold bg-emerald-100 text-emerald-700'
+                    : 'inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold bg-gray-200 text-gray-700';
             }
         }
 

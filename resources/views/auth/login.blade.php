@@ -39,7 +39,7 @@
         </div>
 
         <div class="flex flex-col gap-4 mt-10">
-            <button type="submit" class="w-full bg-blue-600 text-white font-black py-4 rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 active:scale-95 uppercase tracking-[0.2em] text-xs">
+            <button type="submit" class="w-full bg-blue-600 text-white font-black py-4 rounded-2xl hover:bg-blue-700 transition-all active:scale-95 uppercase tracking-[0.2em] text-xs">
                 Entrar no Painel
             </button>
 
