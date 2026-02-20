@@ -79,7 +79,46 @@ class SolicitacaoController extends Controller
      */
     public function index()
     {
-        $chamados = Solicitacao::latest()->paginate(12);
+        $status = request('status');
+        $prioridade = request('prioridade');
+        $busca = trim((string) request('q', ''));
+        $dataInicio = request('data_inicio');
+        $dataFim = request('data_fim');
+
+        $sort = request('sort', 'created_at');
+        $direction = request('direction', 'desc');
+
+        $allowedSorts = ['created_at', 'protocolo', 'nome_solicitante', 'status', 'prioridade'];
+        if (!in_array($sort, $allowedSorts, true)) {
+            $sort = 'created_at';
+        }
+
+        if (!in_array($direction, ['asc', 'desc'], true)) {
+            $direction = 'desc';
+        }
+
+        $query = Solicitacao::query()
+            ->when($status, fn ($query) => $query->where('status', $status))
+            ->when($prioridade, fn ($query) => $query->where('prioridade', $prioridade))
+            ->when($busca !== '', function ($query) use ($busca) {
+                $query->where(function ($subQuery) use ($busca) {
+                    $subQuery->where('protocolo', 'like', "%{$busca}%")
+                        ->orWhere('nome_solicitante', 'like', "%{$busca}%")
+                        ->orWhere('email_solicitante', 'like', "%{$busca}%")
+                        ->orWhere('descricao_duvida', 'like', "%{$busca}%");
+                });
+            })
+            ->when($dataInicio, fn ($query) => $query->whereDate('created_at', '>=', $dataInicio))
+            ->when($dataFim, fn ($query) => $query->whereDate('created_at', '<=', $dataFim));
+
+        if ($sort === 'created_at') {
+            $query->orderBy('created_at', $direction)->orderBy('id', $direction);
+        } else {
+            $query->orderBy($sort, $direction)->orderByDesc('created_at')->orderByDesc('id');
+        }
+
+        $chamados = $query->paginate(12)->withQueryString();
+
         return view('admin.index', compact('chamados'));
     }
 

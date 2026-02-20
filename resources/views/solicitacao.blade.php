@@ -20,11 +20,17 @@
             <div class="bg-blue-600 rounded-xl p-6 text-white shadow-xl transform transition-all hover:scale-[1.01]">
                 <p class="text-blue-100 text-xs uppercase font-black tracking-widest mb-2">Seu Número de Protocolo</p>
                 <div class="flex items-center justify-between">
-                    <h3 class="text-3xl font-mono font-bold">{{ session('protocolo') }}</h3>
-                    <a href="{{ route('protocolo.index') }}" class="bg-white text-blue-600 px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-50 transition-colors">
-                        Acompanhar agora
-                    </a>
+                    <h3 id="protocol-number" class="text-3xl font-mono font-bold">{{ session('protocolo') }}</h3>
+                    <div class="flex items-center gap-2">
+                        <button id="copy-protocol-btn" type="button" onclick="copyProtocol()" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-400 transition-colors">
+                            Copiar protocolo
+                        </button>
+                        <a href="{{ route('protocolo.index') }}" class="bg-white text-blue-600 px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-50 transition-colors">
+                            Acompanhar agora
+                        </a>
+                    </div>
                 </div>
+                <p id="copy-protocol-feedback" class="mt-2 text-xs text-blue-100 hidden">Protocolo copiado para a area de transferencia.</p>
                 <p class="mt-4 text-sm text-blue-100 italic">* Guarde este número para consultar o status do seu chamado futuramente.</p>
             </div>
         @endif
@@ -98,4 +104,38 @@
         </button>
     </form>
 </div>
+<script>
+    async function copyProtocol() {
+        const protocolEl = document.getElementById('protocol-number');
+        const feedbackEl = document.getElementById('copy-protocol-feedback');
+        const copyBtn = document.getElementById('copy-protocol-btn');
+        if (!protocolEl || !feedbackEl || !copyBtn) return;
+
+        const protocol = protocolEl.textContent.trim();
+
+        try {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(protocol);
+            } else {
+                const tempInput = document.createElement('input');
+                tempInput.value = protocol;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+            }
+
+            feedbackEl.textContent = 'Protocolo copiado para a area de transferencia.';
+            feedbackEl.classList.remove('hidden');
+            copyBtn.textContent = 'Copiado!';
+            setTimeout(() => {
+                feedbackEl.classList.add('hidden');
+                copyBtn.textContent = 'Copiar protocolo';
+            }, 1800);
+        } catch (error) {
+            feedbackEl.textContent = 'Nao foi possivel copiar automaticamente.';
+            feedbackEl.classList.remove('hidden');
+        }
+    }
+</script>
 @endsection
