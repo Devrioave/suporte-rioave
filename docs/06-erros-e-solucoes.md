@@ -47,3 +47,18 @@
 - Causa: imagem `--no-dev` sem faker.
 - Solução: `DatabaseSeeder` sem factory, usando `updateOrCreate` direto.
 
+## 10) Erro 500: `Target class [web] does not exist`
+
+- Causa: em Laravel 12, o alias/grupo de middleware não estava sendo registrado no bootstrap da aplicação.
+- Solução: adicionar bloco `->withMiddleware(...)` em `bootstrap/app.php` e recriar a imagem/containers para refletir o arquivo atualizado no container:
+  - `docker compose down`
+  - `docker compose up -d --build --force-recreate`
+  - `docker compose exec app php artisan optimize:clear`
+
+## 11) Erro `419 Page Expired` após login
+
+- Status: observado em ambiente Docker após autenticação, ainda pendente de correção nesta etapa.
+- Próxima investigação sugerida:
+  - validar `APP_URL` e domínio/scheme da sessão;
+  - limpar cookies/sessão do navegador após rebuild;
+  - revisar `SESSION_DRIVER`, `SESSION_DOMAIN` e `SESSION_SECURE_COOKIE` para ambiente local.
