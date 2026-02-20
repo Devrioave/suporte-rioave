@@ -11,21 +11,23 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <script>
         (() => {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const shouldUseDark = savedTheme ? savedTheme === 'dark' : prefersDark;
+            document.documentElement.classList.toggle('dark', shouldUseDark);
         })();
     </script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased text-slate-100">
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gradient-to-br from-[#0b1220] via-[#111c31] to-[#1a2942] px-4">
+<body class="font-sans antialiased text-gray-900 dark:text-slate-100 bg-slate-50 dark:bg-slate-950">
+    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 px-4 bg-gradient-to-br from-blue-50 via-slate-100 to-blue-100 dark:from-[#0b1220] dark:via-[#111c31] dark:to-[#1a2942]">
         <div class="w-full sm:max-w-md px-8 py-12 glass-surface overflow-hidden sm:rounded-[2.5rem]">
             {{ $slot }}
         </div>
 
         <div class="mt-10 text-center">
-            <p class="text-[10px] text-gray-400 font-black tracking-[0.3em] uppercase opacity-60">
+            <p class="text-[10px] text-gray-500 dark:text-gray-400 font-black tracking-[0.3em] uppercase opacity-70">
                 Rio Ave • Painel Seguro
             </p>
         </div>
