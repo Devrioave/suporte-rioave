@@ -11,7 +11,7 @@
 
         <div>
             <label for="email" class="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-2">E-mail Corporativo</label>
-            <x-text-input id="email" class="block mt-1 w-full !rounded-2xl border-gray-100 bg-gray-50/50 focus:bg-white transition-all" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+            <x-text-input id="email" class="block mt-1 w-full !rounded-2xl transition-all" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
@@ -24,7 +24,7 @@
                     </a>
                 @endif
             </div>
-            <x-text-input id="password" class="block mt-1 w-full !rounded-2xl border-gray-100 bg-gray-50/50 focus:bg-white transition-all"
+            <x-text-input id="password" class="block mt-1 w-full !rounded-2xl transition-all"
                             type="password"
                             name="password"
                             required autocomplete="current-password" />

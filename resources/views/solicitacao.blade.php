@@ -79,14 +79,17 @@
             @error('descricao_duvida') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
         </div>
 
-        <div class="mb-8 p-6 bg-blue-50 rounded-lg border-2 border-dashed border-blue-200">
-            <label class="block text-blue-800 font-bold mb-2">Anexos e Evidências</label>
-            <p class="text-blue-600 text-sm mb-4">Você pode selecionar múltiplos arquivos (Imagens ou PDF).</p>
+        <div class="mb-8 p-6 rounded-xl border-2 border-dashed border-blue-200 bg-blue-50 dark:border-blue-700/60 dark:bg-slate-900/60">
+            <label class="block font-bold mb-2 text-blue-800 dark:text-blue-200">Anexos e Evidências</label>
+            <p class="text-sm mb-4 text-blue-600 dark:text-blue-300">Você pode selecionar múltiplos arquivos (Imagens ou PDF).</p>
             
             <input type="file" name="anexo[]" multiple 
-                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer">
+                class="block w-full rounded-lg border border-blue-200/80 bg-white/80 px-3 py-2 text-sm text-gray-600
+                file:mr-4 file:rounded-lg file:border-0 file:bg-blue-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-blue-700
+                dark:border-slate-600 dark:bg-slate-800/70 dark:text-slate-300 dark:file:bg-blue-500 dark:hover:file:bg-blue-400
+                focus:outline-none focus:ring-2 focus:ring-blue-500/60">
             
-            <p class="mt-3 text-xs text-blue-500">Limite: 2MB por arquivo. Formatos: JPG, PNG, PDF.</p>
+            <p class="mt-3 text-xs text-blue-500 dark:text-blue-300/90">Limite: 2MB por arquivo. Formatos: JPG, PNG, PDF.</p>
             @error('anexo.*') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
         </div>
 
