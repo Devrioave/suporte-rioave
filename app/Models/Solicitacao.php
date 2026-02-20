@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Solicitacao extends Model
 {
@@ -16,7 +18,18 @@ class Solicitacao extends Model
         'arquivo_anexo',
         'status',
         'prioridade',
+        'responsavel_id',
         'resposta_admin',
         'resolvido_em',
     ];
+
+    public function responsavel(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'responsavel_id');
+    }
+
+    public function historicos(): HasMany
+    {
+        return $this->hasMany(SolicitacaoHistorico::class)->latest();
+    }
 }
