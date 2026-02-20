@@ -79,7 +79,7 @@ class SolicitacaoController extends Controller
      */
     public function index()
     {
-        $chamados = Solicitacao::latest()->get();
+        $chamados = Solicitacao::latest()->paginate(12);
         return view('admin.index', compact('chamados'));
     }
 

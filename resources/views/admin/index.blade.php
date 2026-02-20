@@ -28,7 +28,7 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-100 dark:bg-slate-900 dark:divide-slate-800">
-                @foreach($chamados as $chamado)
+                @forelse($chamados as $chamado)
                 <tr class="hover:bg-blue-50/40 dark:hover:bg-slate-800/40 transition-colors">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm font-bold text-gray-900 dark:text-slate-100">{{ $chamado->nome_solicitante }}</div>
@@ -65,9 +65,19 @@
                         </div>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="4" class="px-6 py-10 text-center text-sm font-medium text-gray-500 dark:text-slate-400">
+                        Nenhum chamado encontrado.
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
+
+        <div class="px-6 py-4 border-t border-gray-100 dark:border-slate-700/70 bg-white dark:bg-slate-900">
+            {{ $chamados->links() }}
+        </div>
     </div>
 </div>
 
