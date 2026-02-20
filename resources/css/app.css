@@ -1,3 +1,43 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    .dark body {
+        @apply bg-slate-950 text-slate-100;
+    }
+}
+
+@layer utilities {
+    .dark .bg-white {
+        @apply bg-slate-900;
+    }
+
+    .dark .bg-gray-50,
+    .dark .bg-gray-100 {
+        @apply bg-slate-800;
+    }
+
+    .dark .text-gray-900,
+    .dark .text-gray-800,
+    .dark .text-gray-700 {
+        @apply text-slate-100;
+    }
+
+    .dark .text-gray-600,
+    .dark .text-gray-500,
+    .dark .text-gray-400 {
+        @apply text-slate-300;
+    }
+
+    .dark .border-gray-50,
+    .dark .border-gray-100,
+    .dark .border-gray-200,
+    .dark .border-gray-300 {
+        @apply border-slate-700;
+    }
+
+    .dark .hover\:bg-gray-50:hover {
+        @apply bg-slate-800;
+    }
+}

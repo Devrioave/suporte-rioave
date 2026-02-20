@@ -9,7 +9,7 @@
 
 ## Rodar com Docker Compose (MySQL)
 
-1. Suba os containers:
+1. Primeira execução (build inicial da imagem):
 
 ```bash
 docker compose up -d --build
@@ -26,6 +26,23 @@ docker compose exec app php artisan migrate --seed --force
 ```text
 http://localhost:8080
 ```
+
+## Desenvolvimento sem rebuild a cada alteração
+
+Este projeto usa `docker-compose.override.yml` para montar o código local dentro do container `app`.
+Com isso, mudanças em Blade/PHP/assets estáticos refletem sem novo `build`.
+
+Fluxo diário:
+
+```bash
+docker compose up -d
+```
+
+Quando usar `--build` novamente:
+
+- Alterou `dockerfile`
+- Alterou dependências de sistema/PHP
+- Alterou `package*.json` ou `composer.lock`
 
 Credenciais padrão do seed:
 

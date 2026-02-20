@@ -9,19 +9,35 @@
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <script>
+        (() => {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const shouldUseDark = savedTheme ? savedTheme === 'dark' : prefersDark;
+            document.documentElement.classList.toggle('dark', shouldUseDark);
+        })();
+    </script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-50 flex flex-col min-h-screen font-sans antialiased">
+<body class="bg-gray-50 dark:bg-slate-950 flex flex-col min-h-screen font-sans antialiased">
 
-    <header class="bg-white shadow-sm sticky top-0 z-50">
+    <header class="bg-white dark:bg-slate-900 shadow-sm sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
                 <a href="{{ route('home') }}" class="flex items-center gap-2 transition-opacity hover:opacity-80">
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo Rio Ave" class="h-10 w-auto">
+                    <img src="{{ asset('images/logo.png') }}?v={{ filemtime(public_path('images/logo.png')) }}" alt="Logo Rio Ave" class="h-10 w-auto">
                 </a>
             </div>
-            
+
+            <div class="flex items-center gap-3">
+                <button id="theme-toggle"
+                        type="button"
+                        class="px-3 py-2 rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors text-sm font-semibold">
+                    <span id="theme-toggle-icon">🌙</span>
+                    <span class="sr-only">Alternar modo escuro</span>
+                </button>
+
             <div class="hidden md:flex items-center gap-4 text-gray-600 font-medium">
                 @auth
                     <a href="{{ route('admin.user.create') }}" 
@@ -70,6 +86,7 @@
                     </a>
                 @endauth
             </div>
+            </div>
         </nav>
     </header>
 
@@ -81,7 +98,7 @@
         <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
             <div class="col-span-1">
                 <div class="flex items-center gap-2 mb-6">
-                    <img src="{{ asset('images/logo.png') }}" alt="Rio Ave Logo" class="h-8 w-auto brightness-0 invert opacity-90">
+                    <img src="{{ asset('images/logo.png') }}?v={{ filemtime(public_path('images/logo.png')) }}" alt="Rio Ave Logo" class="h-8 w-auto brightness-0 invert opacity-90">
                 </div>
                 <p class="text-sm leading-relaxed mb-6 italic border-l-2 border-blue-500 pl-4">
                     "Soluções inteligentes que simplificam o seu suporte diário e impulsionam sua eficiência."
@@ -173,6 +190,25 @@
     @endguest
 
     <script>
+        function applyTheme(isDark) {
+            document.documentElement.classList.toggle('dark', isDark);
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                icon.textContent = isDark ? '☀️' : '🌙';
+            }
+        }
+
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            const isDark = document.documentElement.classList.contains('dark');
+            applyTheme(isDark);
+            themeToggle.addEventListener('click', () => {
+                const shouldUseDark = !document.documentElement.classList.contains('dark');
+                applyTheme(shouldUseDark);
+            });
+        }
+
         function toggleChat() {
             const chatWindow = document.getElementById('chat-window');
             const iconOpen = document.getElementById('bot-icon-open');
@@ -272,5 +308,3 @@
     </script>
 </body>
 </html>
-
-

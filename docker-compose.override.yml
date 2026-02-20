@@ -1,0 +1,12 @@
+services:
+  app:
+    volumes:
+      - ./:/var/www/html
+      - app_vendor:/var/www/html/vendor
+      - app_node_modules:/var/www/html/node_modules
+      - app_public_build:/var/www/html/public/build
+
+volumes:
+  app_vendor:
+  app_node_modules:
+  app_public_build:
