@@ -12,15 +12,15 @@ use Carbon\Carbon;
 class SolicitacaoController extends Controller
 {
     /**
-     * Exibe o resumo operacional e mÃ©tricas avanÃ§adas (Dashboard).
+     * Exibe o resumo operacional e métricas avançadas (Dashboard).
      */
     public function dashboard()
     {
-        // KPIs de EficiÃªncia
+        // KPIs de Eficiência
         $totalChamados = Solicitacao::count();
         $totalResolvidos = Solicitacao::where('status', 'resolvido')->count();
         
-        // CÃ¡lculo do Tempo MÃ©dio de ResoluÃ§Ã£o (TMR) em horas
+        // Cálculo do Tempo Médio de Resolução (TMR) em horas
         $tmrQuery = Solicitacao::where('status', 'resolvido')
             ->whereNotNull('resolvido_em');
 
@@ -35,27 +35,27 @@ class SolicitacaoController extends Controller
                 ->value('avg_tmr') ?? 0;
         }
 
-        // SLA: Chamados abertos hÃ¡ mais de 24h sem resoluÃ§Ã£o
+        // SLA: Chamados abertos há mais de 24h sem resolução
         $foraDoSla = Solicitacao::where('status', '!=', 'resolvido')
             ->where('created_at', '<', now()->subDay())
             ->count();
 
-        // DistribuiÃ§Ã£o por Prioridade para o GrÃ¡fico de Radar
+        // Distribuição por Prioridade para o Gráfico de Radar
         $prioridades = Solicitacao::select('prioridade', DB::raw('count(*) as total'))
             ->groupBy('prioridade')
             ->pluck('total', 'prioridade');
 
-        // Agrupamento por status para os indicadores rÃ¡pidos
+        // Agrupamento por status para os indicadores rápidos
         $statusCounts = Solicitacao::select('status', DB::raw('count(*) as total'))
             ->groupBy('status')
             ->pluck('total', 'status');
 
-        // Volume por motivo para o grÃ¡fico de barras
+        // Volume por motivo para o gráfico de barras
         $estatisticasMotivo = Solicitacao::select('motivo_contato', DB::raw('count(*) as total'))
             ->groupBy('motivo_contato')
             ->get();
 
-        // TendÃªncia dos Ãºltimos 7 dias para o grÃ¡fico de linha
+        // Tendência dos últimos 7 dias para o gráfico de linha
         $tendenciaSemanal = Solicitacao::selectRaw('DATE(created_at) as data, count(*) as total')
             ->where('created_at', '>=', now()->subDays(7))
             ->groupBy('data')
@@ -84,7 +84,7 @@ class SolicitacaoController extends Controller
     }
 
     /**
-     * Atualiza o chamado e automatiza mÃ©tricas de tempo.
+     * Atualiza o chamado e automatiza métricas de tempo.
      */
     public function update(Request $request, Solicitacao $solicitacao)
     {
@@ -100,7 +100,7 @@ class SolicitacaoController extends Controller
             'prioridade' => $request->prioridade ?? $solicitacao->prioridade
         ];
 
-        // LÃ³gica SÃªnior: Registra automaticamente o tempo de conclusÃ£o se finalizado
+        // Lógica sênior: registra automaticamente o tempo de conclusão se finalizado
         if ($request->status === 'resolvido' && $solicitacao->status !== 'resolvido') {
             $dados['resolvido_em'] = now();
         }
@@ -116,11 +116,11 @@ class SolicitacaoController extends Controller
     public function destroy(Solicitacao $solicitacao)
     {
         $solicitacao->delete();
-        return back()->with('sucesso', 'Chamado excluÃ­do permanentemente.');
+        return back()->with('sucesso', 'Chamado excluído permanentemente.');
     }
 
     /**
-     * Cria a solicitaÃ§Ã£o e gera o protocolo.
+     * Cria a solicitação e gera o protocolo.
      */
     public function store(Request $request)
     {
@@ -149,12 +149,12 @@ class SolicitacaoController extends Controller
         unset($dados['anexo']); 
         Solicitacao::create($dados);
 
-        return back()->with('sucesso', 'SolicitaÃ§Ã£o enviada!')
+        return back()->with('sucesso', 'Solicitação enviada!')
                      ->with('protocolo', $protocolo);
     }
 
     /**
-     * Consulta pÃºblica de protocolo.
+     * Consulta pública de protocolo.
      */
     public function acompanhar(Request $request)
     {
