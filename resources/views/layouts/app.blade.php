@@ -22,8 +22,8 @@
 </head>
 <body class="bg-gray-50 dark:bg-slate-950 flex flex-col min-h-screen font-sans antialiased">
 
-    <header class="bg-white dark:bg-slate-900 shadow-sm sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+    <header class="sticky top-0 z-50 border-b border-slate-200/80 dark:border-slate-700/80 bg-white/90 dark:bg-slate-900/90 backdrop-blur">
+        <nav class="container mx-auto px-6 py-4 flex items-center justify-between gap-4">
             <div class="flex items-center gap-3">
                 <a href="{{ route('home') }}" class="flex items-center gap-2 transition-opacity hover:opacity-80">
                     <img src="{{ asset('images/logo.png') }}?v={{ filemtime(public_path('images/logo.png')) }}" alt="Logo Rio Ave" class="h-10 w-auto">
@@ -33,21 +33,22 @@
             <div class="flex items-center gap-3">
                 <button id="theme-toggle"
                         type="button"
-                        class="px-3 py-2 rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors text-sm font-semibold">
-                    <span class="mr-2">Modo noturno</span>
+                        class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/85 dark:bg-slate-800/90 text-gray-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-sm font-semibold">
+                    <span class="mr-2">Tema</span>
                     <span id="theme-toggle-state" class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold bg-gray-200 text-gray-700">OFF</span>
                 </button>
 
-            <div class="hidden md:flex items-center gap-4 text-gray-600 font-medium">
+            <div class="hidden md:flex items-center gap-2 rounded-2xl border border-slate-200/90 dark:border-slate-700/90 bg-white/80 dark:bg-slate-800/80 px-2 py-1.5 text-gray-600 dark:text-slate-200 font-medium shadow-sm">
                 @auth
                     <a href="{{ route('admin.user.create') }}" 
-                       class="hover:text-blue-600 transition-colors text-sm px-2 {{ request()->routeIs('admin.user.create') ? 'text-blue-600 font-bold' : '' }}">
+                       class="px-3 py-2 rounded-xl text-sm transition-all
+                       {{ request()->routeIs('admin.user.create') ? 'bg-blue-600 text-white font-semibold shadow-sm' : 'hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-300' }}">
                         + Novo Admin
                     </a>
 
                     <a href="{{ route('admin.index') }}" 
-                       class="px-5 py-2 rounded-lg transition-all shadow-sm active:scale-95 flex items-center gap-2 border
-                       {{ request()->routeIs('admin.index') ? 'bg-blue-50 text-blue-700 border-blue-600 font-bold ring-2 ring-blue-100' : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50' }}">
+                       class="px-3 py-2 rounded-xl transition-all active:scale-95 text-sm
+                       {{ request()->routeIs('admin.index') ? 'bg-blue-50 text-blue-700 border border-blue-200 font-semibold dark:bg-blue-900/30 dark:text-blue-200 dark:border-blue-700/70' : 'border border-transparent hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-300' }}">
                         @if(request()->routeIs('admin.index'))
                             <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span> 
                         @endif
@@ -55,33 +56,35 @@
                     </a>
 
                     <a href="{{ route('dashboard') }}" 
-                       class="px-5 py-2 rounded-lg transition-all shadow-sm active:scale-95 flex items-center gap-2 border
-                       {{ request()->routeIs('dashboard') ? 'bg-blue-50 text-blue-700 border-blue-600 font-bold ring-2 ring-blue-100' : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50' }}">
+                       class="px-3 py-2 rounded-xl transition-all active:scale-95 text-sm
+                       {{ request()->routeIs('dashboard') ? 'bg-blue-50 text-blue-700 border border-blue-200 font-semibold dark:bg-blue-900/30 dark:text-blue-200 dark:border-blue-700/70' : 'border border-transparent hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-300' }}">
                         @if(request()->routeIs('dashboard'))
                             <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span> 
                         @endif
                         Dashboard
                     </a>
                     
-                    <form method="POST" action="{{ route('logout') }}" class="inline ml-2">
+                    <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
-                        <button type="submit" class="text-red-500 hover:text-red-700 font-bold transition-all px-3 py-2 hover:bg-red-50 rounded-lg active:scale-95">
+                        <button type="submit" class="px-3 py-2 rounded-xl text-sm font-semibold text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all active:scale-95">
                             Sair
                         </button>
                     </form>
                 @else
                     <a href="{{ route('protocolo.index') }}" 
-                       class="hover:text-blue-600 transition-colors {{ request()->routeIs('protocolo.index') ? 'text-blue-600 font-bold underline decoration-2 underline-offset-8' : '' }}">
+                       class="px-3 py-2 rounded-xl text-sm transition-all
+                       {{ request()->routeIs('protocolo.index') ? 'bg-blue-600 text-white font-semibold shadow-sm' : 'hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-300' }}">
                         Acompanhar Chamado
                     </a>
 
                     <a href="{{ route('home') }}" 
-                       class="hover:text-blue-600 transition-colors {{ request()->routeIs('home') ? 'text-blue-600 font-bold underline decoration-2 underline-offset-8' : '' }}">
+                       class="px-3 py-2 rounded-xl text-sm transition-all
+                       {{ request()->routeIs('home') ? 'bg-blue-50 text-blue-700 border border-blue-200 font-semibold dark:bg-blue-900/30 dark:text-blue-200 dark:border-blue-700/70' : 'border border-transparent hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-300' }}">
                         Suporte Técnico
                     </a>
 
                     <a href="{{ route('login') }}" 
-                       class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition-all shadow-md active:scale-95">
+                       class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition-all shadow-sm active:scale-95 text-sm font-semibold">
                         Painel de Controle
                     </a>
                 @endauth
